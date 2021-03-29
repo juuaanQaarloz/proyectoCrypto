@@ -1,0 +1,51 @@
+<div class="panel panel-default">
+    <!-- Encabezado: Panel de Busqueda -->
+    <div ng-class="{'panel-heading1': contenedorClass,
+                    'panel-heading2': !contenedorClass || contenedorClass == undefined}" class="clickable"
+         ng-click="busquedaCtrl.estaDesplegado=!busquedaCtrl.estaDesplegado; desplegado=!desplegado; accionColapsar()">
+        <div class="row margenHeadTabla">
+            <!-- Titulo -->
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" ng-if="titulo == undefined || titulo == null || titulo == ''">
+                <span class="ixs ixs-buscar" style="display: inline-block;"></span>
+                <span style="display: inline-block; margin-left: 2%;">
+                  <h4 class="panel-title">Busqueda Avanzada</h4>
+                </span>
+            </div>
+
+            <!-- Titulo -->
+            <div class="col-sm-11 text-primary" ng-if="titulo != undefined && titulo != null && titulo != ''">
+                <span class="ixs ixs-buscar" style="display: inline-block; padding-left: 1%;margin-top: 3px;font-size: 14px;" ng-if="iconoBusqueda" ></span> <!--  -->
+                <span style="display: inline-block;"></span>
+                <span style="display: inline-block; margin-left: 2%;">
+                    <h4 class="panel-title">{{titulo}}</h4>
+                </span>
+            </div>
+
+            <!-- Botones: Busqueda & Limpiar campos -->
+            <div class="col-sm-1 pull-right">
+
+                <!-- Icono colapsable -->
+
+                <div class="pull-right" style="padding-left: 3px;padding-right: 3px;">
+
+                    <i class="ixs ixs-gr " style="color:#5281c2;"
+                       ng-class="{'ixs-flechaArriba': busquedaCtrl.estaDesplegado,
+                        'ixs-flechaAbajo': !busquedaCtrl.estaDesplegado}"></i>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Contenido dinamico de la busqueda -->
+    <div class="container-fluid" ng-show="busquedaCtrl.estaDesplegado">
+        <div ng-if="!contenedorClass" id="bodyBusqueda" class="panel-body" ng-transclude>
+        </div>
+        <div ng-if="contenedorClass"  class="panel-body" ng-transclude>
+
+        </div>
+
+    </div>
+</div>

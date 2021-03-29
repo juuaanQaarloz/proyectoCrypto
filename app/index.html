@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+  <html lang="es" ng-app="app">
+  <!--[if lt IE 7]>      <html lang="es" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+  <!--[if IE 7]>         <html lang="es" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+  <!--[if IE 8]>         <html lang="es" class="no-js lt-ie9"> <![endif]-->
+  <!--[if gt IE 8]><!--> <html lang="es" class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Proyecto de Crypto</title>
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico" />
+    <link rel="stylesheet" href="css/xs-icon/style.css"/>
+    <!-- Librerias -->
+    <script src="bower_components/jquery/jquery.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/lodash/lodash.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=PT+Sans:400,700'>
+
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/app-theme01.css">
+    <link rel="stylesheet" href="css/app-bootstrap.css">
+    <link rel="stylesheet" href="css/animate.css">
+
+
+    <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.css" />
+
+  </head>
+  <body charset="UTF-8" ng-controller="AppControlador as appCtrl">
+    <!--[if lt IE 7]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Javascript -->
+    <script src="css/assets/js/supersized.3.2.7.min.js"></script>
+    <script src="css/assets/js/supersized-init.js"></script>
+    <script src="css/assets/js/scripts.js"></script>
+
+    <!-- Modulos: AngularJS -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
+    <script src="bower_components/angular-clipboard/angular-clipboard.js"></script>
+
+    <!-- Modulos: eAspayb -->
+    <script src="app.module.js"></script>
+    <script src="app.constants.js"></script>
+    <script src="app.controller.js"></script>
+    <script src="app.routes.js"></script>
+    <script src="app.services.js"></script>
+
+    <script src="Servicios/alertas.service.js"></script>
+    <script src="Servicios/notificacion.service.js"></script>
+    <script src="Servicios/tabla.service.js"></script>
+    <script src="Servicios/au.service.js"></script>
+
+    <script src="Directivas/xsModulo.js"></script>
+    <script src="Directivas/xsFiltros.js"></script>
+    <script src="Directivas/xsDirectivas/Componentes/xsTabla/xsTabla.directiva.js"></script>
+    <script src="Directivas/xsDirectivas/Componentes/xsMenuABM/xsMenuABM.js"></script>
+    <script src="Directivas/xsDirectivas/Componentes/xsBusqueda/xsBusqueda.directiva.js"></script>
+
+    <script src="Directivas/xsDirectivas/easpaybFile/easpaybFile.directive.js"></script>
+    <script src="Directivas/xsDirectivas/easpaybFileAgregarModel/easpaybFileAgregarModel.directive.js"></script>
+
+    <script src="Tablas/tablas.js"></script>
+    <script src="Tablas/ObjetosDeConfiguracion/objsGenerales.js"></script>
+    <script src="Tablas/ObjetosDeConfiguracion/objsGenerales.valores.js"></script>
+
+    <script src="Tablas/Servicios/tblsGenerales.servicio.js"></script>
+    <script src="Tablas/Servicios/tablasServicios.js"></script>
+
+    <!-- Modulo: Acceso -->
+    <script src="Modulos/Acceso/inicio/inicio.controller.js"></script>
+
+    <div ng-view></div>
+  </body>
+</html>

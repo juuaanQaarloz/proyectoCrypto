@@ -1,0 +1,34 @@
+<div ng-controller="InicioControlador as inicioCtrl">
+    <div ng-if="inicioCtrl.bndInicio">
+        <link rel="stylesheet" href="./css/assets/css/style.css">
+        <link rel="stylesheet" href="./css/assets/css/reset.css">
+        <link rel="stylesheet" href="./css/assets/css/supersized.css">
+        <link rel="stylesheet" href="./css/assets/css/style.css">
+        <div class="page-container" >
+            <div style="margin-top:60px">
+                <h1>Control de Asistencia</h1>
+                <form novalidate name="form">
+                    <input type="text" name="username"
+                           class="username"
+                           ng-model="inicioCtrl.usuario"
+                           placeholder="Profesor">
+                    <input type="password" name="password"
+                           class="password"
+                           ng-model="inicioCtrl.contrasenia"
+                           placeholder="Clave">
+                    <button type="button" ng-if="inicioCtrl.contrasenia && inicioCtrl.usuario"
+                            style="width: 300px; height: 44px;margin-top: 25px;"
+                            ng-click="inicioCtrl.login();">
+                        Ingresar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div ng-if="!inicioCtrl.bndInicio">
+        <style>
+            body { background: white; padding: 1% !important;}
+            #supersized {display: none !important;}</style>
+        <div ng-include="'Modulos/Acceso/inicio/detalle/portal.html'"></div>
+    </div>
+</div>

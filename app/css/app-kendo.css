@@ -1,0 +1,71 @@
+// use as theme: 'newTheme'
+kendo.dataviz.ui.registerTheme('newTheme', {
+"chart": {
+"title": {
+       "color": "#333333"
+       },
+"legend": {
+"labels": {
+        "color": "#333333"
+        }
+},
+"chartArea": {
+           "background": "#ffffff"
+           },
+"seriesDefaults": {
+"labels": {
+        "color": "#333333"
+        }
+},
+"axisDefaults": {
+"line": {
+      "color": "#f5f5f5"
+      },
+"labels": {
+        "color": "#333333"
+        },
+"minorGridLines": {
+                "color": "#f5f5f5"
+                },
+"majorGridLines": {
+                "color": "#d7e5f7"
+                },
+"title": {
+       "color": "#333333"
+       }
+},
+"seriesColors": [
+"#5281c2",
+"#b4d4de",
+"#69b869",
+"#d7bd48",
+"#e38b89",
+"#d9514e"
+],
+"tooltip": {
+         "background": "#f5f5f5",
+         "color": "#a8a8a8",
+         "opacity": 0
+         }
+},
+"gauge": {
+"pointer": {
+         "color": "#5281c2"
+         },
+"scale": {
+"rangePlaceholderColor": "#d9edf7",
+"labels": {
+        "color": "#333333"
+        },
+"minorTicks": {
+            "color": "#90c2d1"
+            },
+"majorTicks": {
+            "color": "#f5f5f5"
+            },
+"line": {
+      "color": "#5281c2"
+      }
+}
+}
+});

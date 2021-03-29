@@ -1,0 +1,350 @@
+<div class="panel panel-info" ng-if="ocultar && tablaCtrl.datosPrincipales != null">
+    <div class="panel-heading">
+        <!-- ********************************************************** Encabezado del Detalle -->
+        <div class="row margenHeadTabla">
+            <!-- Titulo -->
+            <div class="col-sm-2 text-primary" style="padding-top: 5px;">
+                <i class="ixs ixs-flechaIzquierda ixs-2x clickable pull-left" ng-click="tablaCtrl.ocultarDetalle()"></i>
+            </div>
+            <!-- Busqueda -->
+            <div class="text-primary col-sm-6 row">
+                <h4 class="panel-title text-center">{{tituloDetalle}}</h4>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Contenido dinamico del detalle -->
+    <div class="panel-body" style="padding: 1% 1%;" ng-if="detalleInterno==undefined" ng-transclude>
+    </div>
+</div>
+
+<div class="panel panel-default panel-responsive"
+     ng-if="config.permisos.consultar && !ocultar && tablaCtrl.datosPrincipales != null">
+    <div ng-class="{'panel-heading1': tablaCtrl.contenedor == true,
+                    'panel-heading2': tablaCtrl.contenedor == false || (tablaCtrl.contenedor == '' || tablaCtrl.contenedor == null)}">
+        <!-- ********************************************************** Encabezado de la Tabla -->
+        <div class="row margenHeadTabla">
+            <!-- Titulo -->
+            <div style="padding-top: 5px;" ng-class="{'col-sm-4': ocultarBusqueda == false,
+                                                      'col-sm-4': ocultarBusqueda == undefined,
+                                                      'col-sm-6': ocultarBusqueda == true }">
+
+                <h4 class="panel-title">
+                    <i class="ixs ixs-{{icono}}"></i>
+                    <span>{{titulo}}</span></h4>
+            </div>
+            <!-- Busqueda -->
+            <div class=""
+                 ng-class="{'col-sm-3':reducirBuscar, 'col-sm-4': reducirBuscar == false, 'col-sm-4':reducirBuscar == undefined}" style="padding: 0;" ng-hide="ocultarBusqueda">
+                <!--<div class="col-lg-3"></div>-->
+                <div class="form-group">
+                    <div class="input-group margin-bottom-sm">
+                        <span class="input-group-addon"><i class="ixs ixs-buscar"></i></span>
+                        <input class="form-control" id="tblEmployeesMic" type="text" class="form-control"
+                               placeholder="Buscar"
+                               ng-model="tablaCtrl.busqueda" x-webkit-speech lang="es-MX">
+                    </div>
+                </div>
+                <!--<div class="col-lg-3"></div>-->
+            </div>
+
+            <!-- Menu ABM -->
+            <div class="pull-right" ng-class="{'col-sm-4': ocultarBusqueda == false,
+                                                'col-sm-4': ocultarBusqueda == undefined,
+                                                'col-sm-6': ocultarBusqueda == true}">
+                <div ng-if="tablaCtrl.editable && !valMostrarAgregarRow()" class="pull-right" data-toggle="modal">
+                    <i
+                            ng-click="tablaCtrl.agregarRow();"
+                            class="btn btn-primary ixs ixs-agregar ixs-gr"
+                            style="  padding: 4px 6px !important;"></i>&nbsp;
+                </div>
+
+            </div>
+        </div>
+        <div class="row margenHeadTabla" ng-if="mostraBusquedaMini">
+            <div class="col-sm-12" >
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="input-group margin-bottom-sm">
+                            <span class="input-group-addon"><i class="ixs ixs-buscar"></i></span>
+                            <input class="form-control" type="text" class="form-control"
+                                   placeholder="Buscar"
+                                   ng-model="tablaCtrl.busqueda" x-webkit-speech lang="es-MX">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div ng-show="tablaCtrl.datosPrincipales == undefined">
+            <xs-cargando-datos vista="{{titulo}}"></xs-cargando-datos>
+        </div>
+
+        <!-- Mensaje: Tabla vacia -->
+        <div ng-show="tablaCtrl.datosPrincipales.length==0 && !tablaCtrl.agregarRowFlag">
+            <hr>
+            No existen registros
+            <hr>
+        </div>
+        <div id="{{config.id}}" style="overflow-x: auto;">
+            <table class="table table-striped hoverTable table-responsive"
+                   ng-if="tablaCtrl.datosPrincipales.length>0 || tablaCtrl.agregarRowFlag">
+                <thead>
+                <tr>
+                    <th ng-repeat="columna in config.columnas" ng-if="columna.visible || columna.visible==undefined"
+                        ng-class="{'text-primary': columna.descripcion==tablaCtrl.columnaSeleccionada, 'text-right':columna.filtro=='currency' || columna.align=='right'}">
+
+                        <div class="Hover clickable" ng-if="columna.dato == undefined" ng-click="tablaCtrl.ordenarPor(columna.valor, columna.descripcion)"
+                             tooltip title="{{columna.tooltip}}" data-placement="top">
+                            <i class="ixs" ng-class="{'ixs-listaOrdenAlfabetoAsc': columna.descripcion==tablaCtrl.columnaSeleccionada &&
+                                                        tablaCtrl.ordenSeleccionado==columna.valor,
+                                   'ixs-listaOrdenAlfabetoDesc': columna.descripcion==tablaCtrl.columnaSeleccionada &&
+                                                         tablaCtrl.ordenSeleccionado!=columna.valor}"
+                               ng-if="columna.tipo=='string'"></i>
+                            <i class="ixs" ng-class="{'ixs-listaOrdenNumerosAsc': columna.descripcion==tablaCtrl.columnaSeleccionada &&
+                                                        tablaCtrl.ordenSeleccionado==columna.valor,
+                                   'ixs-listaOrdenNumerosDesc': columna.descripcion==tablaCtrl.columnaSeleccionada &&
+                                                         tablaCtrl.ordenSeleccionado!=columna.valor}"
+                               ng-if="columna.tipo=='number'"></i>
+                            <i class="ixs" ng-class="{'ixs-senalArriba': columna.descripcion==tablaCtrl.columnaSeleccionada &&
+                                                        tablaCtrl.ordenSeleccionado==columna.valor,
+                                   'ixs-senal': columna.descripcion==tablaCtrl.columnaSeleccionada &&
+                                                         tablaCtrl.ordenSeleccionado!=columna.valor}"
+                               ng-if="columna.tipo=='otro'"></i>
+                            {{columna.descripcion}}
+                        </div>
+
+
+                        <!-- ------------------------------------------------------------------ Checkbox header -------------------------------------------------------------------- -->
+                        <div ng-if="columna.dato != undefined">
+                            <i class="ixs"
+                               ng-class="{'ixs-listaOrdenAlfabetoAsc': columna.descripcion==tablaCtrl.columnaSeleccionada &&
+                                                                       tablaCtrl.ordenSeleccionado==columna.valor,
+                                         'ixs-listaOrdenAlfabetoDesc': columna.descripcion==tablaCtrl.columnaSeleccionada &&
+                                                                       tablaCtrl.ordenSeleccionado!=columna.valor}"
+                               ng-if="columna.tipo=='string'"></i>
+                            <i class="ixs"
+                               ng-class="{'ixs-listaOrdenNumerosAsc': columna.descripcion==tablaCtrl.columnaSeleccionada &&
+                                                                      tablaCtrl.ordenSeleccionado==columna.valor,
+                                         'ixs-listaOrdenNumerosDesc': columna.descripcion==tablaCtrl.columnaSeleccionada &&
+                                                                      tablaCtrl.ordenSeleccionado!=columna.valor}"
+                               ng-if="columna.tipo=='number'"></i>
+                            <i class="ixs"
+                               ng-class="{'ixs-senalArriba': columna.descripcion==tablaCtrl.columnaSeleccionada &&
+                                                             tablaCtrl.ordenSeleccionado==columna.valor,
+                                          'ixs-senal': columna.descripcion==tablaCtrl.columnaSeleccionada &&
+                                                       tablaCtrl.ordenSeleccionado!=columna.valor}"
+                               ng-if="columna.tipo=='otro'"></i>
+
+                            <!-- Select checkbox real -->
+                            <div style="display: inline-block;">
+                                <span style="display: inline-block;" class="Hover clickable"
+                                      ng-click="tablaCtrl.ordenarPor(columna.valor, columna.descripcion, columna.validarCampo)">
+                                    {{columna.descripcion}}
+                                </span>
+                                <!-- Checkbox -->
+                                <span  style="display: inline-block;" ng-if="columna.dato != undefined && config.permisos.modificar"
+                                       ng-init="tablaCtrl.inciarCampoSelect(tablaCtrl.datosPrincipales, columna.valor, columna.validarCampo)">
+                                    <div ng-if="columna.input=='checkbox' && tablaCtrl.todos[columna.valor].mostrar">
+                                        <input type="{{columna.input}}"
+                                               ng-false-value="'N'"
+                                               ng-true-value="'S'"
+                                               ng-model="tablaCtrl.todos[columna.valor].valor"
+                                               ng-change="tablaCtrl.seleccionarTodos(tablaCtrl.todos[columna.valor].valor, tablaCtrl.datosPrincipales, columna.valor, columna.validarCampo)"
+                                               name="{{columna.valor}}Col"/>
+                                    </div>
+                                </span>
+                                <span  style="display: inline-block;"
+                                       ng-if="columna.dato != undefined && columna.seleccionarTabla == 'S'">
+                                    <div ng-if="columna.input=='checkbox'">
+                                        <input type="{{columna.input}}"
+                                               ng-false-value="'N'"
+                                               ng-true-value="'S'"
+                                               ng-model="tablaCtrl.todos[columna.valor].valor"
+                                               ng-change="tablaCtrl.seleccionarTodosDatosTabla(tablaCtrl.todos[columna.valor].valor, tablaCtrl.datosPrincipales, columna.valor, columna.validarCampo)"
+                                               name="{{columna.valor}}Col"/>
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+
+                    </th>
+                    <th ng-if="tablaCtrl.editable">
+                       Acción
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr class="Hover" ng-if="tablaCtrl.agregarRowFlag">
+                    <form class="form-inline" role="form" name="formTabla" novalidate>
+
+                        <td ng-class="{'text-primary': registro==registroSeleccionado}"
+                            ng-repeat="columna in config.columnas ">
+                            <div ng-if="columna.input!=undefined && columna.input!=null">
+                                <div ng-if="columna.input=='number'" class="text-right">
+                                    <input type="{{columna.input}}"
+                                           min="{{columna.min}}"
+                                           max="{{columna.max}}"
+                                           step="{{columna.step}}"
+                                           ng-model="agregarRowValor[columna.valor]"
+                                           name="{{columna.valor}}"
+                                    />
+                                </div>
+                                <div ng-if="columna.input=='checkbox'">
+                                    <input type="{{columna.input}}"
+                                           ng-false-value="'N'"
+                                           ng-true-value="'S'"
+                                           ng-model="agregarRowValor[columna.valor]"
+                                           name="{{columna.valor}}"
+                                    />
+                                </div>
+
+                            </div>
+                        </td>
+                    </form>
+                    <td>
+                        <div class="" data-toggle="modal">
+                            <i ng-disabled="valAgregarRow()"
+                               ng-click="agregarRowAccion(); tablaCtrl.agregarRowFlag = false;"
+                               class="btn btn-success ixs ixs-guardar ixs-gr"
+                               style="  padding: 2px 6px !important;"></i>&nbsp;
+                        </div>
+                    </td>
+                </tr>
+
+                <!--ng-repeat="registro in tablaCtrl.datosFiltrados = (datos | filter:tablaCtrl.busqueda | offset: tablaCtrl.currentPage*tablaCtrl.itemsPerPage | limitTo: tablaCtrl.itemsPerPage | orderBy:tablaCtrl.ordenSeleccionado)"-->
+
+                <tr class="Hover"
+                    ng-class="{'info': registro==registroSeleccionado, 'alert-success': config.indVigencia!=undefined && tablaCtrl.validaVigencia(registro), 'clickable': !tablaCtrl.modificarRow}"
+                    ng-repeat-start="registro in tablaCtrl.datosPrincipales | filter:tablaCtrl.busqueda | offset: tablaCtrl.currentPage*tablaCtrl.itemsPerPage | limitTo: tablaCtrl.itemsPerPage | orderBy:tablaCtrl.ordenSeleccionado"
+                    ng-click="seleccionarRegistro({registro: registro}); tablaCtrl.validarStatus(registro);tablaCtrl.clcikear(registro);"
+                    ng-dblclick="" ng-style="tablaCtrl.styleFila(registro)" tooltip=""
+                    data-toggle="tooltip"
+                    title="{{registro.indTooltipRow}}" placement="top">
+
+
+
+                    <td ng-class="{'text-primary': registro==registroSeleccionado, 'columnaCenter': columna.iconoTabla!=undefined}"
+                        ng-repeat="columna in config.columnas"
+                        ng-if="columna.visible || columna.visible==undefined">
+
+
+                        <span ng-if=" !(columna.modal && abrirModal) && columna.dato == undefined && registro[columna.valor]!==true && registro[columna.valor]!==false &&
+                            columna.colImg==undefined && columna.iconoTabla==undefined && columna.tooltip == undefined && (columna.filtro == undefined || columna.filtro == null || columna.filtro == '')"
+                              ng-class="{'pull-right':columna.align=='right'}">
+                              {{registro[columna.valor]|filtroDinamico:columna.filtro}}
+                        </span>
+
+                        <span ng-if="columna.dato == undefined && columna.tooltip!=undefined &&
+                                    (columna.filtro == undefined || columna.filtro == null || columna.filtro == '')"
+                              tooltip data-toggle="tooltip"
+                              ng-class="{'pull-right':columna.align=='right'}" title="{{registro[columna.tooltip]}}">
+                            {{registro[columna.valor]|filtroDinamico:columna.filtro}}
+                        </span>
+
+                        <span ng-if="columna.dato == undefined && columna.tooltip!=undefined && columna.filtro!=undefined" tooltip
+                              data-toggle="tooltip"
+                              ng-class="{'pull-right':columna.align=='right'}" title="{{registro[columna.tooltip]}}">
+                            {{registro[columna.valor]|filtroDinamico:columna.filtro}}
+                        </span>
+
+
+                        <span ng-if="columna.dato == undefined && columna.filtro!=undefined && columna.tooltip == undefined"
+                              ng-class="{'badge-success badge badge-primary badge-btn': config.indVigencia!=undefined && columna.valor==config.indVigencia.colInd && tablaCtrl.validaVigencia(registro),
+                             'pull-right':columna.filtro=='currency' || columna.align=='right' }">
+                            {{registro[columna.valor]|filtroDinamico:columna.filtro}}</span>
+
+
+                        <span ng-if="((columna.dato != undefined && columna.valorSelect == undefined ) && columna.seleccionarTabla != 'S' &&
+                                      !config.permisos.modificar) || registro[columna.validarCampo] == 'N'">
+                            {{registro[columna.valor]|filtroDinamico:columna.filtro}}
+                        </span>
+
+                        <span style="width: 270px!important;" ng-if="((columna.dato != undefined && columna.valorSelect != undefined )  && !config.permisos.modificar)">
+                            <strong>{{registro[columna.valor]|filtroDinamico:columna.filtro}}</strong>
+                        </span>
+
+                    </td>
+                    <td ng-if="tablaCtrl.editable">
+                        <div ng-if="!validaAccionTabla" class="" data-toggle="modal" ng-disabled="formTabla.$invalid"
+                             ng-click="eliminarRowAccion({registro: registro}); ">
+                            <i class="btn btn-danger ixs ixs-tacha ixs-gr"
+                               style="  padding: 2px 6px !important;"></i>&nbsp;
+                        </div>
+                    </td>
+                </tr>
+                <!-- *** DETALLE DENTRO DE TABLA *** -->
+                <tr ng-repeat-end
+                    ng-if="detalleInterno!=undefined && registro==registroSeleccionado && detalleInterno == true"
+                    style="background-color: white !important;">
+                    <td style="background-color: #ffffff !important; overflow-x: hidden;padding:0;" colspan="80%"
+                        ng-transclude></td>
+                </tr>
+                <!-- *** DETALLE DENTRO DE TABLA *** -->
+
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+
+    <!-- ******************************************************************************************* Footer dela Tabla -->
+    <div class="panel-footer footer-panelGeneral"
+         ng-if="tablaCtrl.pageCount()>=0 && tablaCtrl.datosPrincipales.length>config.paginacion[0]">
+        <div class="row" style="margin: 0;padding-top: 4px;" ng-if="!ocultarPaginacion">
+            <div class="col-xs-2" style="padding-right: 0" ng-if="tablaCtrl.pageCount()>=1">
+                <div class="row">
+                    <div class="col-sm-12" style="padding: 0; margin-top: -3px;">
+                        <select class="form-control"
+                                ng-if="tablaCtrl.pageCount()>=1"
+                                ng-model="tablaCtrl.itemsPerPage"
+                                ng-options="paginacion for paginacion in config.paginacion"
+                                ng-change="tablaCtrl.ajustarTamanoPagina(tablaCtrl.itemsPerPage)">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- Navegacion -->
+            <div class="col-sm-8" style="margin-top: 3px;" ng-if="tablaCtrl.pageCount()>=1">
+                <div class="col-sm-10 col-lg-offset-1">
+                    <ul class="paginacion">
+                        <!-- Primero -->
+                        <li ng-class="tablaCtrl.prevPageDisabled()" ng-click="tablaCtrl.primerPagina()">
+                            <a href=""><i class="ixs ixs-flechaPaginacionInicio ixs-gr"></i>&nbsp;</a>
+                        </li>
+
+                        <!-- Anterior -->
+                        <li ng-class="tablaCtrl.prevPageDisabled()" ng-click="tablaCtrl.paginarAtras($event)">
+                            <a href=""><i class="ixs ixs-flechaPaginacionIzquierda ixs-gr"></i>&nbsp;</a>
+                        </li>
+
+                        <!-- Indice -->
+                        <li class="active"><a href="">{{tablaCtrl.currentPage + 1}} <span
+                                class="sr-only">(current)</span></a>
+                        </li>
+
+                        <!-- Siguiente -->
+                        <li ng-class="tablaCtrl.nextPageDisabled()" ng-click="tablaCtrl.paginarAdelante()">
+                            <a href=""><i class="ixs ixs-flechaPaginacionDerecha ixs-gr"></i>&nbsp;</a>
+                        </li>
+
+                        <!-- Anterior -->
+                        <li ng-class="tablaCtrl.nextPageDisabled()" ng-click="tablaCtrl.ultimaPagina()">
+                            <a href=""><i class="ixs ixs-flechaPaginacionFin ixs-gr"></i>&nbsp;</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <p class="col-lg-2 pull-right" style="padding-left: 0;margin-top: 7px;" ng-if="tablaCtrl.pageCount()>=0">
+                <span class="text-info">{{tablaCtrl.currentPage + 1}}</span> <span>de</span>
+                <span class="text-info">{{tablaCtrl.pageCount() + 1}}</span>
+            </p>
+        </div>
+    </div>
+</div>

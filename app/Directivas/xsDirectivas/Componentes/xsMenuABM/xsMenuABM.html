@@ -1,0 +1,110 @@
+<div ng-if="datos.length>0">
+    <div class="btn-group pull-right">
+        <div  ng-if="xsMenuAbmCtrl.a && xsMenuAbmCtrl.botonPersonalizado && botonSinClase == undefined" class="btnXsTablaABM" data-toggle="modal"
+             ng-click="botonAccion();" ng-class="{disabled: !botonHabilitado}">
+            <i title="{{botonTool}}"  data-toggle="tooltip" tooltip class="ixs ixs-{{botonPersonalizado}} ixs-gr"></i>&nbsp;
+        </div>
+
+        <!-- Boton sin clase de accion -->
+        <div  ng-if="xsMenuAbmCtrl.a && xsMenuAbmCtrl.botonPersonalizado && botonSinClase != undefined"
+              class="btnXsTablaABMExterno" data-toggle="modal" style="display: inline-block;"
+             ng-click="botonAccion();" ng-class="{disabled: !botonHabilitado}">
+            <i title="{{botonTool}}" style="color:{{botonSinClase}}; cursor: pointer"  data-toggle="tooltip" tooltip class="ixs-2x ixs-{{botonPersonalizado}} ixs-gr"></i>&nbsp;
+        </div>
+
+        <div  ng-if="mostrarBotonPersonalizado && xsMenuAbmCtrl.botonPersonalizado && botonSinClase == undefined" class="btnXsTablaABM" data-toggle="modal"
+              ng-click="botonAccion();" ng-class="{disabled: !botonHabilitado}">
+            <i title="{{botonTool}}"  data-toggle="tooltip" tooltip class="ixs ixs-{{botonPersonalizado}} ixs-gr"></i>&nbsp;
+        </div>
+
+        <!-- Boton sin clase de accion -->
+        <div  ng-if="mostrarBotonPersonalizado && xsMenuAbmCtrl.botonPersonalizado && botonSinClase != undefined"
+              class="btnXsTablaABMExterno" data-toggle="modal" style="display: inline-block;"
+              ng-click="botonAccion();" ng-class="{disabled: !botonHabilitado}">
+            <i title="{{botonTool}}" style="color:{{botonSinClase}}; cursor: pointer"  data-toggle="tooltip" tooltip class="ixs-2x ixs-{{botonPersonalizado}} ixs-gr"></i>&nbsp;
+        </div>
+
+
+        <div ng-if="xsMenuAbmCtrl.a" class="btnXsTablaABM" data-toggle="modal"
+             tooltip title="{{'ADDTABLA'}}" data-placement="top"
+             ng-click="cargarMdlA(); xsMenuAbmCtrl.mostrarModal(modals.agregar); xsMenuAbmCtrl.indicarOperacion('A')">
+            <i class="ixs ixs-agregar ixs-gr"></i>&nbsp;
+        </div>
+        <div ng-if="xsMenuAbmCtrl.m && editarValidar == undefined" class="btnXsTablaABM" data-toggle="modal"
+             ng-class="{disabled: modelo==null || modelo==undefined || modelo=={}}"
+             tooltip title="{{'UPDATETABLA'}}" data-placement="top"
+             ng-click="cargarMdlM(); xsMenuAbmCtrl.mostrarModal(modals.modificar); xsMenuAbmCtrl.indicarOperacion('M')">
+            <i class="ixs ixs-editar ixs-gr" ng-if="editarConsultar == undefined || !editarConsultar"></i><i
+                class="ixs ixs-abrirexpediente ixs-gr" ng-if="editarConsultar"></i>&nbsp;
+        </div>
+        <div ng-if="xsMenuAbmCtrl.b" class="btnXsTablaABM" data-toggle="modal"
+             ng-class="{disabled: modelo==null || modelo==undefined || modelo=={}}"
+             tooltip title="{{'DELETETABLA'}}" data-placement="top"
+             ng-click="xsMenuAbmCtrl.mostrarModal(modals.borrar); xsMenuAbmCtrl.indicarOperacion('B')">
+            <i class="ixs ixs-tacha ixs-gr"></i>&nbsp;
+        </div>
+        <div ng-if="permisos.observaciones && ocultarObs == undefined" class="btnXsTablaABM"
+             data-toggle="modal" style="display: inline-block;"
+             tooltip title="{{'OBSETABLA'}}" data-placement="top"
+             ng-class="{disabled: modelo==null || modelo==undefined || modelo=={} ||
+                       (xsMenuAbmCtrl.numeroObservaciones[row+''+tabla] == null || xsMenuAbmCtrl.numeroObservaciones[row+''+tabla] < 1)}"
+             ng-click="xsMenuAbmCtrl.mostrarObservacion(permisos.grpLov,true,null)">
+            <span><i class="ixs ixs-mensajeSolido ixs-2"></i></span>
+            <span ng-if="(modelo != null && modelo!= undefined && modelo != '')&& permisos.observaciones && xsMenuAbmCtrl.numeroObservaciones[row+''+tabla] != null && xsMenuAbmCtrl.numeroObservaciones[row+''+tabla] > 0"
+                  style="font-size: small; position: absolute; margin-top: -10px; margin-left: -10px; opacity: 0.8 !important;" class="danger badge-tabla">{{xsMenuAbmCtrl.numeroObservaciones[row+''+tabla]}}</span>&nbsp;
+        </div>
+        <div class="btnXsTablaABM" data-toggle="dropdown"
+             ng-class="{disabled: (modelo==null || modelo==undefined || modelo=={}) && ocultarColumnas==undefined}"
+             ng-if="(menusTabla.length>0 && ocultarMenuContexto==undefined) || (permisos.observaciones && ocultarMenuContexto==undefined) ||
+             (permisos.audDML && ocultarMenuContexto==undefined) || (ocultarColumnas!=null && ocultarMenuContexto==undefined) || (menusSimples != undefined && ocultarMenuContexto==undefined) ">
+            <i class="ixs ixs-menu ixs-gr"></i> <span class="caret"></span>
+            <ul class="dropdown-menu" role="menu">
+                <hr ng-if="columna.visible!=undefined && ocultarColumnas!=null">
+                <li ng-repeat="menu in menusTabla | orderBy:'orden'"
+                    ng-if="menu.indPermitido=='S' && menu.ddl.modal!='modalAgregarObs' && modelo!=null && modelo!=undefined && modelo!={}"
+                    ng-click="ejecutarAccion({ddl: menu.ddl, tabla: menu.mnuEmergente})">
+                    <a href="">{{menu.descAccion}}</a>
+                </li>
+                <li ng-repeat="menu in menusTabla | orderBy:'orden'"
+                    ng-if="menu.indPermitido=='S' && menu.ddl.modal=='modalAgregarObs' && modelo!=null && modelo!=undefined && modelo!={}"
+                    ng-click="xsMenuAbmCtrl.mostrarObservacion(menu.grpLov,false,menu.ddl)">
+                    <a href="">{{'AGREOBSERVACIONES'}}</a>
+                </li>
+                <li ng-if="permisos.audDML && modelo!=null && modelo!=undefined && modelo!={}"
+                    ng-click="accionAuditoria({idRow: row, idTabla: tabla, titulo: titulo});"
+                        >
+                    <a href="">{{'AUDITORIA'}}</a>
+                </li>
+                <li role="separator" class="divider"
+                    ng-if="ocultarColumnas!=null  && modelo!=null && modelo!=undefined && modelo!={}"></li>
+                <span ng-repeat="columna in columnas" ng-if="columna.visible!=undefined && columna.quitarContexto == undefined"
+                      style="display: block; padding: 3px 20px; clear: both; font-weight: normal; line-height: 1.428571429; color: #333333; white-space: nowrap;">
+                  <input id="colOculta" type="checkbox" ng-model="columna.visible" ng-click="$event.stopPropagation()"> {{columna.descripcion}}
+                </span>
+            </ul>
+        </div>
+
+
+
+    </div>
+</div>
+
+<div ng-if="datos.length==0 && xsMenuAbmCtrl.noMostrar">
+    <div class="btn-group pull-right">
+        <div  ng-if="xsMenuAbmCtrl.a && xsMenuAbmCtrl.botonPersonalizado && botonSinClase == undefined" class="btnXsTablaABM" data-toggle="modal"
+              ng-click="botonAccion();">
+            <i title="{{botonTool}}"  data-toggle="tooltip" tooltip class="ixs ixs-{{botonPersonalizado}} ixs-gr"></i>&nbsp;
+        </div>
+
+        <!-- Boton sin clase de accion -->
+        <div  ng-if="xsMenuAbmCtrl.a && xsMenuAbmCtrl.botonPersonalizado && botonSinClase != undefined" class="btnXsTablaABMExterno"  data-toggle="modal" style="display: inline-block;"
+              ng-click="botonAccion();">
+            <i title="{{botonTool}}" style="color:{{botonSinClase}}; cursor: pointer"  data-toggle="tooltip" tooltip class="ixs-2x ixs-{{botonPersonalizado}} ixs-gr"></i>&nbsp;
+        </div>
+
+        <div ng-if="xsMenuAbmCtrl.a" class="btnXsTablaABM" data-toggle="modal"
+             tooltip title="{{'ADDTABLA'}}" data-placement="top"
+             ng-click="cargarMdlA();  xsMenuAbmCtrl.mostrarModal(modals.agregar); xsMenuAbmCtrl.indicarOperacion('A');">
+            <i class="ixs ixs-agregar ixs-gr"></i>&nbsp;</div>
+    </div>
+</div>
