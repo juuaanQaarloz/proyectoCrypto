@@ -11,354 +11,232 @@
 
         /** Obtener configuracion de Tabla **/
         inicioCtrl.tblDatosCargados = tblsServicios.getTabla('tblsGenerales', 'tblDatosCargados');
-        inicioCtrl.tblDatosSeguimiento = tblsServicios.getTabla('tblsGenerales', 'tblDatosSeguimiento');
-        inicioCtrl.tblDatosSeguimientoJust = tblsServicios.getTabla('tblsGenerales', 'tblDatosSeguimiento');
-        inicioCtrl.tblDatosJustificacion = tblsServicios.getTabla('tblsGenerales', 'tblDatosJustificacion');
-        inicioCtrl.tblDatosSeguimientoJust.permisos.agregar = true;
-        inicioCtrl.tblDatosSeguimientoJust.permisos.borrar = true;
-        inicioCtrl.tblDatosSeguimientoJust.permisos.modificar = true;
 
         /** Variables, Listas, Objetos, banderas **/
-        inicioCtrl.bndInicio = true;
-        inicioCtrl.planillaAlumnos = 'Modulos/Acceso/inicio/platilla/plantillaAsistencia.xlsx';
-        inicioCtrl.profesor = {};
-        inicioCtrl.profesor.nombre = 'JUAN CARLOS NUTE HERNANDEZ';
-        inicioCtrl.profesor.idProfesor = 1;
-        var colores = ['#2283C1', '#509B11', '#A19E05', '#A13705', '#BB1903', '#03B5BB', '#0361BB', '#5E30B2', '#B230AE', '#A1133C'];
-
-        inicioCtrl.mdlAddJustificacion = 'Modulos/Acceso/inicio/modals/mdlAddJustificacion.html';
-        inicioCtrl.mdlDelJustificacion = 'Modulos/Acceso/inicio/modals/mdlDelJustificacion.html';
-        inicioCtrl.mdlUpdJustificacion = 'Modulos/Acceso/inicio/modals/mdlUpdJustificacion.html';
+        inicioCtrl.indCodificar = 'N';
 
         /** Configuracion de Datepicker */
+        inicioCtrl.cbxTiposCrypto = {
+            placeholder: "Seleccione",
+            dataTextField: "nombre",
+            dataValueField: "id"
+        };
 
-        inicioCtrl.opcionesMenu = [
-            {idOpcion: 'C', opcion: 'Carga Asistencia Excel', descripcion: 'Con un archivo excel se subira la asistencia de los alumnos'},
-            {idOpcion: 'S', opcion: 'Seguimiento de Asistencia', descripcion: 'Analisis de la asistencia del grupo y materia'},
-            {idOpcion: 'J', opcion: 'Justificacion de Faltas', descripcion: 'Solo para Justificacion de Faltas a alumnos'},
+        inicioCtrl.tiposCrypto = [
+            {id: 1, nombre: 'Algoritmo de César'},
+            {id: 2, nombre: 'Algoritmo ROT13'},
+            {id: 3, nombre: 'Algoritmo ROT47'},
+            {id: 4, nombre: 'Sustitución por clave (Vigénere)'},
+            {id: 5, nombre: 'Transposición'}
         ];
 
-        inicioCtrl.clases = [
-            {idClase: 1, nombre: 'Programación Orientada a Objetos'},
-            {idClase: 2, nombre: 'Programación WEB'},
+        inicioCtrl.rot13 = ['A','B','C','D','E','F','G','H','I','J','K','L','M'];
+        inicioCtrl.rot131 = ['N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+        var abecedario = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+        inicioCtrl.vigenere = [
+            ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'],
+            ['B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','A'],
+            ['C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','A','B'],
+            ['D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','A','B','C'],
+            ['E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','A','B','C','D'],
+            ['F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','A','B','C','D','E'],
+            ['G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','A','B','C','D','E','F'],
+            ['H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','A','B','C','D','E','F','G'],
+            ['I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','A','B','C','D','E','F','G','H'],
+            ['J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','A','B','C','D','E','F','G','H','I'],
+            ['K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','A','B','C','D','E','F','G','H','I','J'],
+            ['L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','A','B','C','D','E','F','G','H','I','J','K'],
+            ['M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','A','B','C','D','E','F','G','H','I','J','K','L'],
+            ['N','O','P','Q','R','S','T','U','V','W','X','Y','Z','A','B','C','D','E','F','G','H','I','J','K','L','M'],
+            ['O','P','Q','R','S','T','U','V','W','X','Y','Z','A','B','C','D','E','F','G','H','I','J','K','L','M','N'],
+            ['P','Q','R','S','T','U','V','W','X','Y','Z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'],
+            ['Q','R','S','T','U','V','W','X','Y','Z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'],
+            ['R','S','T','U','V','W','X','Y','Z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q'],
+            ['S','T','U','V','W','X','Y','Z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R'],
+            ['T','U','V','W','X','Y','Z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S'],
+            ['U','V','W','X','Y','Z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T'],
+            ['V','W','X','Y','Z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U'],
+            ['W','X','Y','Z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V'],
+            ['X','Y','Z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W'],
+            ['Y','Z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X'],
+            ['Z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y']
+
         ];
+        inicioCtrl.rot47 = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+        var matriz = [];
+        inicioCtrl.sustitucionClave = matriz;
+        inicioCtrl.errorCadena = null;
 
         /** Funciones del Controlador **/
         activarControlador();
-        inicioCtrl.login = login;
-        inicioCtrl.logout = logout;
-        inicioCtrl.seleccionarOpcion = seleccionarOpcion;
-        inicioCtrl.seleccionarOpcionMenu = seleccionarOpcionMenu;
-        inicioCtrl.numeroIndexAleatorio = numeroIndexAleatorio;
-
-        inicioCtrl.limpiarCarga = limpiarCarga;
-        inicioCtrl.cargarArchivo = cargarArchivo;
-        inicioCtrl.confirmarAsistencia = confirmarAsistencia;
-
-        inicioCtrl.buscarSeguimiento = buscarSeguimiento;
-        inicioCtrl.limpiarBuscar = limpiarBuscar;
-        inicioCtrl.seleccionarSeguimiento = seleccionarSeguimiento;
-
-        inicioCtrl.buscarSeguimientoJustificacion = buscarSeguimientoJustificacion;
-        inicioCtrl.limpiarBuscarJustificar = limpiarBuscarJustificar;
-        inicioCtrl.seleccionarJustificacion = seleccionarJustificacion;
-        inicioCtrl.abrirModalAgregar = abrirModalAgregar;
-        inicioCtrl.abrirModalMod = abrirModalMod;
-        inicioCtrl.abrirModalEliminar = abrirModalEliminar;
-        inicioCtrl.crudJustificacion = crudJustificacion;
-        inicioCtrl.buscarJustificacionByIdCRUD = buscarJustificacionByIdCRUD;
-        inicioCtrl.seleccionarJustificacionCRUD = seleccionarJustificacionCRUD;
-        inicioCtrl.noHaCambiado = noHaCambiado;
+        inicioCtrl.limpiarDatos = limpiarDatos;
+        inicioCtrl.codificar = codificar;
+        inicioCtrl.descodificar = descodificar;
+        inicioCtrl.descodificar = descodificar;
 
         function activarControlador() {
-            angular.forEach(inicioCtrl.opcionesMenu, function (resp) {
-                var numero = numeroIndexAleatorio();
-                $timeout(function () {
-                    resp.color = colores[numero];
+            
+        }
+
+        function codificar() {
+            inicioCtrl.resultado = null;
+            inicioCtrl.errorCadena = null;
+            if(inicioCtrl.tipoCrypto == 1) {
+                cesar(true);
+            } else if(inicioCtrl.tipoCrypto == 2) {
+                algoritmoROT13();
+            } else if(inicioCtrl.tipoCrypto == 3) {
+                algoritmoROT47();
+            } else if(inicioCtrl.tipoCrypto == 4) {
+                vigenere();
+            } else if(inicioCtrl.tipoCrypto == 5) {
+                transposicion();
+            }
+        }
+
+        function descodificar() {
+            inicioCtrl.resultado = null;
+            inicioCtrl.errorCadena = null;
+            if(inicioCtrl.tipoCrypto == 1) {
+                cesar();
+            } else if(inicioCtrl.tipoCrypto == 2) {
+                algoritmoROT13();
+            } else if(inicioCtrl.tipoCrypto == 3) {
+                algoritmoROT47();
+            } else if(inicioCtrl.tipoCrypto == 4) {
+                vigenere();
+            } else if(inicioCtrl.tipoCrypto == 5) {
+                transposicion();
+            }
+        }
+
+        function limpiarDatos(bnd) {
+            inicioCtrl.resultado = null;
+            if (bnd) {
+                inicioCtrl.cadenaCodificar = null;
+                inicioCtrl.indCodificar = 'N';
+                inicioCtrl.clave = null;
+                inicioCtrl.valorN = null;
+                inicioCtrl.permutaciones = null;
+            } else {
+                inicioCtrl.cadenaCodificar = null;
+                inicioCtrl.tipoCrypto = null;
+                inicioCtrl.indCodificar = 'N';
+                inicioCtrl.clave = null;
+                inicioCtrl.valorN = null;
+                inicioCtrl.permutaciones = null;
+            }
+        }
+
+        function cesar(cifrar) {
+            var rotaciones = (cifrar?3:-3);
+
+            var LONGITUD_ALFABETO = 26, INICIO_MINUSCULAS = 97, INICIO_MAYUSCULAS = 65;
+            var cadenaRotada = "";
+            var abecedarioCopy = angular.copy(abecedario);
+            for (var x = 0; x < inicioCtrl.cadenaCodificar.length; x++) {
+                var caracterActual = inicioCtrl.cadenaCodificar.charAt(x);
+                console.log("fdsfdsfdsfdf");
+                console.log(typeof caracterActual === 'number');
+                console.log(isNaN(caracterActual));
+                console.log("fdsfdsfdsfdf");
+                if (!isNaN(caracterActual)) {
+                    cadenaRotada = cadenaRotada + "" + caracterActual;
+                } else {
+                    var codigoAsciiDeCaracterActual = caracterActual.charCodeAt(0);
+                    var esMayuscula = (caracterActual === angular.uppercase(caracterActual));
+                    var nuevaPosicionEnAlfabeto = ((codigoAsciiDeCaracterActual - (esMayuscula ? INICIO_MAYUSCULAS : INICIO_MINUSCULAS)) + rotaciones) % LONGITUD_ALFABETO;
+                    if (nuevaPosicionEnAlfabeto < 0) nuevaPosicionEnAlfabeto += LONGITUD_ALFABETO;
+                    var nuevaPosicionAscii = (esMayuscula ? INICIO_MAYUSCULAS : INICIO_MINUSCULAS) + nuevaPosicionEnAlfabeto;
+                    cadenaRotada = cadenaRotada + "" + String.fromCharCode(nuevaPosicionAscii);
+                }
+            }
+            $timeout(function () {
+                inicioCtrl.resultado = cadenaRotada;
+            });
+        }
+
+        function algoritmoROT13() {
+            var resultado = "";
+            angular.forEach(inicioCtrl.cadenaCodificar, function (caracter, index) {
+               var indexCad = _.findIndex(inicioCtrl.rot13, function (rotCaduno) {
+                    return rotCaduno == caracter;
+               });
+               if(indexCad >= 0){
+                   resultado += inicioCtrl.rot131[indexCad];
+               } else {
+                   var indexCadD = _.findIndex(inicioCtrl.rot131, function (rotCadDos) {
+                       return rotCadDos == caracter;
+                   });
+                   if(indexCadD >= 0){
+                       resultado += inicioCtrl.rot13[indexCadD];
+                   }
+               }
+
+               if((index+1) == inicioCtrl.cadenaCodificar.length){
+                   inicioCtrl.resultado = resultado;
+               }
+
+            });
+        }
+
+        function algoritmoROT47() {
+            var R = "";
+            var i, j, c, len = inicioCtrl.rot47.length;
+            for(i = 0; i < inicioCtrl.cadenaCodificar.length; i++) {
+                c = inicioCtrl.cadenaCodificar.charAt(i);
+                j = inicioCtrl.rot47.indexOf(c);
+                if (j >= 0) {
+                    c = inicioCtrl.rot47.charAt((j + len / 2) % len);
+                }
+                R += c;
+            }
+            $timeout(function () {
+                inicioCtrl.resultado = R;
+            });
+        }
+        
+        function vigenere() {
+
+            var cadenaRemplace = '';
+            var count = 0;
+            angular.forEach(inicioCtrl.cadenaCodificar, function (a) {
+                cadenaRemplace += inicioCtrl.clave[count];
+                count++;
+                if(inicioCtrl.clave.length == count)
+                    count = 0;
+            });
+
+            if(inicioCtrl.numeros){
+                angular.forEach(cadenaRemplace, function (a) {
+
                 });
-            });
-            limpiarBuscar();
-            limpiarBuscarJustificar();
-            limpiarCarga(true);
-        }
+            } else {
 
-        function numeroIndexAleatorio() {
-            return Math.floor((Math.random() * 11));
-        }
-
-        function login() {
-            console.log("Esta entrando al metodo de Login");
-            var parametros = {
-                usuario: inicioCtrl.usuario,
-                contrasenia: inicioCtrl.contrasenia
             }
-            var promesa = serviciosRest.login(parametros).$promise;
-            promesa.then(function (respuesta) {
-                if(respuesta.length>0){
-                    inicioCtrl.bndInicio = false;
-                    inicioCtrl.profesor = respuesta[0];
-                    alertasServicios.desplegarInfo("Bienvenido Profesor: " + inicioCtrl.profesor.nombre);
-                }
-            });
-            promesa.catch(function (error) {
-             alertasServicios.desplegarError(error);
-            });
-        }
 
-        function seleccionarOpcion(opcion) {
-            console.log("Esta entrando al metodo de seleccionarOpcion");
-            inicioCtrl.opcionSeleccionada = null;
             $timeout(function () {
-                inicioCtrl.opcionSeleccionada = opcion;
+                console.log(cadenaRemplace);
+            });
+        }
+
+        function transposicion() {
+
+            var claves = "2, 3, 4, 5, 6, 7";
+            //var claves = inicioCtrl.posiciones;
+
+            var claveOrdenada = claves.split(",").sort();
+
+            console.log(claveOrdenada);
+
+            angular.forEach(claveOrdenada, function (clave, index) {
+                if( clave.trim() != (index+1)){
+                    console.log("La clave no tiene números consecutivos: ejemplo 1: {1, 2, 3, 4, 5 }, ejemplo 2: { 10, 7 , 8, 2, 3, 4, 5, 1, 6, 9 }");
+                    inicioCtrl.errorCadena = "La clave no tiene números consecutivos {" + claveOrdenada + "}";
+                    inicioCtrl.errorCadenaDos = "Ejemplos: a: {1, 2, 3, 4, 5 }, b: { 10, 7 , 8, 2, 3, 4, 5, 1, 6, 9 }, c: { 8, 2, 3, 4, 5, 1, 6, 7 }";
+                }
             })
-        }
-
-        function seleccionarOpcionMenu(indOpcion, visualizar) {
-            console.log("Esta entrando al metodo de seleccionarOpcionMenu");
-            var opcion = _.filter(inicioCtrl.opcionesMenu, function (opcion) {
-                return opcion.idOpcion == indOpcion;
-            });
-            if(opcion.length>0 && !visualizar){
-                seleccionarOpcion(opcion[0]);
-            } else if(visualizar){
-                return opcion.length>0;
-            }
-        }
-
-
-        /************** INICIO SECCION PARA PODER CARGAR ARCHIVO ****************/
-
-        function cargarArchivo() {
-            console.log("Esta entrando al metodo de cargarArchivo");
-            var fd = new FormData();
-            console.log($filter('fechaSimple')(inicioCtrl.fechaAsistencia));
-            fd.append('file', inicioCtrl.archivo);
-            fd.append('indConfirma', 'N');
-            var promesaArchivo = serviciosRest.cargarAlumnosExcel(fd);
-            promesaArchivo.then(function (respuesta) {
-                console.log(respuesta);
-                if(respuesta.data.length > 0) {
-                    alertasServicios.desplegarSuccess("Se ha cargado la asistencia correctamente");
-                    inicioCtrl.listaDatosCargado = respuesta.data;
-                }
-            });
-            promesaArchivo.catch(function (error) {
-                alertasServicios.desplegarMensaje(error);
-            })
-        }
-
-        function confirmarAsistencia() {
-            console.log("Esta entrando al metodo de confirmarAsistencia");
-            var fd = new FormData();
-            fd.append('indConfirma', "S");
-            fd.append('file', inicioCtrl.archivo);
-            fd.append('fecha', $filter('fechaSimple')(inicioCtrl.fechaAsistencia));
-            fd.append('idProfesor', inicioCtrl.profesor.idProfesor);
-            fd.append('materia', inicioCtrl.materia);
-            var promesaArchivo = serviciosRest.cargarAlumnosExcel(fd);
-            promesaArchivo.then(function (respuesta) {
-                if(respuesta.data.length > 0) {
-                    inicioCtrl.listaDatosCargado = [];
-                    alertasServicios.desplegarSuccess("Se ha confirmado la asistencia correctamente");
-                    limpiarCarga()
-                }
-            });
-            promesaArchivo.catch(function (error) {
-                alertasServicios.desplegarMensaje(error);
-            })
-        }
-
-        function limpiarCarga(bnd) {
-            console.log("Esta entrando al metodo de limpiarBusqueda");
-            inicioCtrl.fechaAsistencia = null;
-            inicioCtrl.materia = null;
-            inicioCtrl.archivo = null;
-            inicioCtrl.listaDatosCargado = [];
-            if(!bnd)
-                inicioCtrl.limpiarArchivo();
-        }
-
-        /************** FIN SECCION PARA PODER CARGAR ARCHIVO ****************/
-
-
-
-        /************** INICIO SECCION SECCION SEGUIMIENTO ****************/
-
-        function buscarSeguimiento() {
-            console.log("Esta entrando al metodo de buscarSeguimiento");
-            inicioCtrl.seguimiento = [];
-            var parametros = {
-                pnIdProfesor: inicioCtrl.profesor.idProfesor,
-                pcMateria: inicioCtrl.materiaSeg,
-                pcFechaAsistencia: $filter('fechaSimple')(inicioCtrl.fecAsistencia),
-                pcMatriculaAlumno: inicioCtrl.matricula
-            }
-            var promesa = serviciosRest.searchSeguimiento(parametros).$promise;
-            promesa.then(function (respuesta) {
-                if(respuesta.length>0){
-                    inicioCtrl.seguimiento = respuesta;
-                } else alertasServicios.desplegarMensaje("No existen registros con los parametros ingresados");
-            });
-            promesa.catch(function (error) {
-                alertasServicios.desplegarError(error);
-            });
-        }
-
-        function limpiarBuscar() {
-            inicioCtrl.materiaSeg = null;
-            inicioCtrl.fecAsistencia = null;
-            inicioCtrl.indAsistio = null;
-            inicioCtrl.seguimientoSeleccionado = null;
-            inicioCtrl.seguimiento = [];
-        }
-
-        function seleccionarSeguimiento(row) {
-            inicioCtrl.seguimientoSeleccionado = row;
-            buscarJustificacionById(row.idAsistencia);
-        }
-
-        function buscarJustificacionById(idAsistencia) {
-            console.log("Esta entrando al metodo de buscarJustificacion");
-            inicioCtrl.seguimientoJustificacion = [];
-            var parametros = {
-                pnIdAsitencia: idAsistencia
-            };
-            var promesa = serviciosRest.searchJustificacion(parametros).$promise;
-            promesa.then(function (respuesta) {
-                if(respuesta.length>0){
-                    inicioCtrl.seguimientoJustificacion = respuesta;
-                }
-            });
-            promesa.catch(function (error) {
-                alertasServicios.desplegarError(error);
-            });
-        }
-
-        /************** FIN SECCION SECCION SEGUIMIENTO ****************/
-
-
-        /************** INICIO SECCION SECCION JUSTIFICACIONES ****************/
-
-        function buscarSeguimientoJustificacion() {
-            console.log("Esta entrando al metodo de buscarSeguimiento");
-            inicioCtrl.justificacionSeguimiento = [];
-            var parametros = {
-                pnIdProfesor: inicioCtrl.profesor.idProfesor,
-                pcMateria: inicioCtrl.materiaJustificacion,
-                pcFechaAsistencia: $filter('fechaSimple')(inicioCtrl.fecAsistenciaJust),
-                pcMatriculaAlumno: inicioCtrl.matriculaJustificacion,
-                pcIndAsitencia: 'N'
-            }
-            var promesa = serviciosRest.searchSeguimiento(parametros).$promise;
-            promesa.then(function (respuesta) {
-                if(respuesta.length>0){
-                    inicioCtrl.justificacionSeguimiento = respuesta;
-                } else alertasServicios.desplegarMensaje("No existen registros con los parametros ingresados");
-            });
-            promesa.catch(function (error) {
-                alertasServicios.desplegarError(error);
-            });
-        }
-
-        function buscarJustificacionByIdCRUD(idAsistencia) {
-            console.log("Esta entrando al metodo de buscarJustificacion");
-            inicioCtrl.justificacionCRUD = [];
-            var parametros = {
-                pnIdAsitencia: idAsistencia
-            };
-            var promesa = serviciosRest.searchJustificacion(parametros).$promise;
-            promesa.then(function (respuesta) {
-                if(respuesta.length>0){
-                    inicioCtrl.justificacionCRUD = respuesta;
-                }
-            });
-            promesa.catch(function (error) {
-                alertasServicios.desplegarError(error);
-            });
-        }
-
-        function limpiarBuscarJustificar() {
-            inicioCtrl.materiaJustificacion = null;
-            inicioCtrl.fecAsistenciaJust = null;
-            inicioCtrl.matriculaJustificacion = null;
-            inicioCtrl.matriculaJustificacion = null;
-            inicioCtrl.justificacion = [];
-        }
-
-        function seleccionarJustificacion(row) {
-            inicioCtrl.justificacionSeleccionado = row;
-            inicioCtrl.justificacionCRUD = [];
-            buscarJustificacionByIdCRUD(inicioCtrl.justificacionSeleccionado.idAsistencia);
-        }
-        function seleccionarJustificacionCRUD(row) {
-            inicioCtrl.justificaCRUDSeleccionado = row;
-            inicioCtrl.justificaCRUDEditable = angular.copy(inicioCtrl.justificaCRUDSeleccionado);
-        }
-
-        function abrirModalAgregar() {
-            inicioCtrl.nuevoJustificacion = {};
-            inicioCtrl.nuevoJustificacion.autorizado = null;
-            angular.element('#mdlAddJustificacion').modal('show');
-        }
-        function abrirModalMod() {
-            angular.element('#mdlUpdJustificacion').modal('show');
-        }
-        function abrirModalEliminar() {
-            angular.element('#mdlDelJustificacion').modal('show');
-        }
-
-        function noHaCambiado() {
-            return !angular.equals(inicioCtrl.justificaCRUDEditable, inicioCtrl.justificaCRUDSeleccionado);
-        }
-
-        function crudJustificacion(tipo) {
-            var parametros = {};
-            parametros.pcAccion = tipo;
-            if(tipo == 'INSERT'){
-                parametros.idAsistencia = inicioCtrl.justificacionSeleccionado.idAsistencia;
-                parametros.matricula = inicioCtrl.justificacionSeleccionado.matricula;
-                parametros.nombreAlumno = inicioCtrl.justificacionSeleccionado.nombreAlumno;
-                parametros.indAsistencia = inicioCtrl.justificacionSeleccionado.indAsistencia;
-                parametros.idProfesor = inicioCtrl.justificacionSeleccionado.idProfesor;
-                parametros.fechaAsistencia = inicioCtrl.justificacionSeleccionado.fechaAsistencia;
-                parametros.materia = inicioCtrl.justificacionSeleccionado.materia;
-                parametros.motivo = inicioCtrl.nuevoJustificacion.motivo;
-                parametros.autorizado = inicioCtrl.nuevoJustificacion.autorizado;
-            } else if(tipo == 'DELETE'){
-                parametros.idJustificacion = inicioCtrl.justificaCRUDEditable.idJustificacion;
-            } else if(tipo == 'UPDATE'){
-                parametros.idJustificacion = inicioCtrl.justificaCRUDEditable.idJustificacion;
-                parametros.motivo = inicioCtrl.justificaCRUDEditable.motivo;
-                parametros.autorizado = inicioCtrl.justificaCRUDEditable.autorizado;
-            }
-            var promesa = serviciosRest.crudJustificacion(parametros).$promise;
-            promesa.then(function (respuesta) {
-                inicioCtrl.justificaCRUDSeleccionado = null;
-                buscarJustificacionByIdCRUD(inicioCtrl.justificacionSeleccionado.idAsistencia);
-                angular.element('#mdlAddJustificacion').modal('hide');
-                angular.element('#mdlUpdJustificacion').modal('hide');
-                angular.element('#mdlDelJustificacion').modal('hide');
-            });
-            promesa.catch(function (error) {
-                alertasServicios.desplegarError(error);
-            });
 
         }
-
-        /************** FIN SECCION SECCION JUSTIFICACIONES ****************/
-
-        function logout() {
-            inicioCtrl.usuario = null;
-            inicioCtrl.contrasenia = null;
-            inicioCtrl.profesor = null;
-            limpiarBuscar();
-            limpiarBuscarJustificar();
-            limpiarCarga(true);
-            $timeout(function () {
-                alertasServicios.desplegarInfo("Acaba de Cerrar Sesión Correctamente");
-                inicioCtrl.bndInicio = true;
-            });
-        }
-
     }
 })();

@@ -5,7 +5,7 @@
          'ngResource',
          'ngAnimate',
          'tablas',
-         'xpertysModulo',
+         'xsModulo',
          'toastr',
          'angular-clipboard'
         ]);
