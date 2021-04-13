@@ -104,9 +104,9 @@
             } else if(inicioCtrl.tipoCrypto == 3) {
                 algoritmoROT47();
             } else if(inicioCtrl.tipoCrypto == 4) {
-                vigenere();
+                vigenere(true);
             } else if(inicioCtrl.tipoCrypto == 5) {
-                transposicion();
+                transposicion(true);
             }
         }
 
@@ -196,28 +196,30 @@
             });
         }
         
-        function vigenere() {
+        function vigenere(desencriptar) {
 
-            var cadenaRemplace = '';
-            var count = 0;
-            angular.forEach(inicioCtrl.cadenaCodificar, function (a) {
-                cadenaRemplace += inicioCtrl.clave[count];
-                count++;
-                if(inicioCtrl.clave.length == count)
-                    count = 0;
-            });
+            var keyStr = inicioCtrl.clave; //inicioCtrl.cadenaCodificar;
+            var keyArray = filterKey(keyStr);
 
-            if(inicioCtrl.numeros){
-                angular.forEach(cadenaRemplace, function (a) {
-
-                });
-            } else {
-
+            if (desencriptar) {
+                for (var i = 0; i < keyArray.length; i++)
+                    keyArray[i] = (26 - keyArray[i]) % 26;
             }
 
-            $timeout(function () {
-                console.log(cadenaRemplace);
-            });
+            var output = "";
+            for (var i = 0, j = 0; i < inicioCtrl.cadenaCodificar.length; i++) {
+                var c = inicioCtrl.cadenaCodificar.charCodeAt(i);
+                if (isUppercase(c)) {
+                    output += String.fromCharCode((c - 65 + keyArray[j % keyArray.length]) % 26 + 65);
+                    j++;
+                } else if (isLowercase(c)) {
+                    output += String.fromCharCode((c - 97 + keyArray[j % keyArray.length]) % 26 + 97);
+                    j++;
+                } else {
+                    output += inicioCtrl.cadenaCodificar.charAt(i);
+                }
+            }
+            inicioCtrl.resultado = output;
         }
 
         function transposicion() {
@@ -236,7 +238,30 @@
                     inicioCtrl.errorCadenaDos = "Ejemplos: a: {1, 2, 3, 4, 5 }, b: { 10, 7 , 8, 2, 3, 4, 5, 1, 6, 9 }, c: { 8, 2, 3, 4, 5, 1, 6, 7 }";
                 }
             })
-
         }
+
+        function filterKey(key) {
+            var result = [];
+            for (var i = 0; i < key.length; i++) {
+                var c = key.charCodeAt(i);
+                if (isLetter(c))
+                    result.push((c - 65) % 32);
+            }
+            return result;
+        }
+
+        function isLetter(c) {
+            return isUppercase(c) || isLowercase(c);
+        }
+
+        function isUppercase(c) {
+            return 65 <= c && c <= 90;  // 65 is character code for 'A'. 90 is 'Z'.
+        }
+
+        function isLowercase(c) {
+            return 97 <= c && c <= 122;  // 97 is character code for 'a'. 122 is 'z'.
+        }
+
+
     }
 })();
