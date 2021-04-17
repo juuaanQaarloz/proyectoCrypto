@@ -6229,3 +6229,32 @@ ol.progtrckr li.progtrckr-todo:before {
   border-radius: 5px;
   background: #000000;
 }
+
+/* clases de estilos para la directiva switch **/
+.toogle-switch {
+  border-radius: 60px;
+  padding: 2px;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+.toogle-switch-on-active-t {
+  background: #777;
+}
+.toogle-switch-off-active-t {
+  background: #62b125;
+}
+.toogle-switch-on {
+  font-size: 13px;
+  line-height: 10px;
+  padding: 0;
+}
+.toogle-switch-on-active {
+}
+.toogle-switch-off {
+  padding: 0;
+  line-height: 10px;
+  font-size: 13px;
+}
+.toogle-switch-off-active {
+  background: white;
+}

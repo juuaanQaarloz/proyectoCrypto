@@ -1,0 +1,71 @@
+<div class="toogle-switch" ng-style="easpaybSwitchCtrl.styleTamanio"
+     ng-click="easpaybSwitchCtrl.clickSwitch()">
+    <div class="col-sm-12 padding-cero" style="height: {{easpaybSwitchCtrl.altoSwitch}}px;">
+        <div class="col-sm-6 padding-cero text-center toogle-switch-on"
+             ng-style="easpaybSwitchCtrl.styleTamanioDta">
+            <span ng-if="!easpaybSwitchCtrl.valorDeSwitch">
+               <div class="padding-cero" style="margin-top: {{easpaybSwitchCtrl.marginIconoM2}}px;"
+                    ng-if="labelOn || imgOn "
+                    ng-class="{'col-sm-10': iconOn, 'col-sm-12': !iconOn}">
+                    <img ng-if="imgOn" width="20px" height="20px" src="img/{{imgOn}}" style="margin-left: 10px;">
+                    <b ng-if="labelOn.length>55 && labelOn" tooltip title="{{labelOn}}">{{(labelOn)|limitTo:55}}...</b>
+                    <b ng-if="labelOn.length<=55 && labelOn" tooltip title="{{tooltipLabelOn}}">{{labelOn}}</b>
+                </div>
+                <div class="padding-cero" ng-if="iconOn" style="padding-right: 3px; margin-top: {{easpaybSwitchCtrl.marginIcono}}px;"
+                     ng-class="{'col-sm-2': labelOn, 'col-sm-12': !labelOn}"
+                     tooltip title="{{tooltipLabelOn}}" data-placement="bottom">
+                     <i class="fa {{faIconOn}}" ng-if="faIconOn" style="font-size: {{easpaybSwitchCtrl.tamanioIcon}}px"></i>
+                     <i class="ixs ixs-{{iconOn}}" ng-if="!faIconOn" style="font-size: {{easpaybSwitchCtrl.tamanioIcon}}px"></i>
+                </div>
+            </span>
+            <span ng-if="easpaybSwitchCtrl.valorDeSwitch">
+                <div class="padding-cero" style="margin-top: {{easpaybSwitchCtrl.marginIconoM2}}px;"
+                     ng-if="labelOff || imgOff "
+                     ng-class="{'col-sm-10': iconOff, 'col-sm-12': !iconOff}">
+                    <img ng-if="imgOff" width="20px" height="20px" src="img/{{imgOff}}" style="margin-left: 10px;">
+                    <b ng-if="labelOff.length>55 && labelOff" tooltip title="{{labelOff}}">{{(labelOff)|limitTo:55}}...</b>
+                    <b ng-if="labelOff.length<=55 && labelOff" tooltip title="{{tooltipLabelOff}}">{{labelOff}}</b>
+                </div>
+                <div class="padding-cero" style="padding-right: 3px; margin-top: {{easpaybSwitchCtrl.marginIcono}}px;"
+                     ng-class="{'col-sm-2': labelOff, 'col-sm-12': !labelOff}"
+                     ng-if="iconOff" tooltip title="{{tooltipLabelOff}}" data-placement="bottom">
+                    <i class="fa {{faIconOff}}" ng-if="faIconOff" style="font-size: {{easpaybSwitchCtrl.tamanioIcon}}px"></i>
+                    <i class="ixs ixs-{{iconOff}}" ng-if="!faIconOff" style="font-size: {{easpaybSwitchCtrl.tamanioIcon}}px"></i>
+                </div>
+            </span>
+        </div>
+        <div class="col-sm-6 padding-cero text-center toogle-switch-off"
+             ng-style="easpaybSwitchCtrl.styleTamanioDato">
+            <span ng-if="easpaybSwitchCtrl.valorDeSwitch">
+               <div class="padding-cero" style="margin-top: {{easpaybSwitchCtrl.marginIconoM2}}px;"
+                    ng-if="labelOn || imgOn "
+                    ng-class="{'col-sm-10': iconOn, 'col-sm-12': !iconOn}">
+                    <img ng-if="imgOn" width="20px" height="20px" src="img/{{imgOn}}" style="margin-left: 10px;">
+                    <b ng-if="labelOn.length>55 && labelOn" tooltip title="{{labelOn}}">{{labelOn|limitTo:55}}...</b>
+                    <b ng-if="labelOn.length<=55 && labelOn" tooltip title="{{tooltipLabelOn}}">{{labelOn}}</b>
+                </div>
+                <div class="padding-cero" ng-if="iconOn" style="padding-right: 3px; margin-top: {{easpaybSwitchCtrl.marginIcono}}px;"
+                     ng-class="{'col-sm-2': labelOn, 'col-sm-12': !labelOn}"
+                     tooltip title="{{tooltipLabelOn}}" data-placement="bottom">
+                     <i class="fa {{faIconOn}}" ng-if="faIconOn" style="font-size: {{easpaybSwitchCtrl.tamanioIcon}}px"></i>
+                     <i class="ixs ixs-{{iconOn}}" ng-if="!faIconOn" style="font-size: {{easpaybSwitchCtrl.tamanioIcon}}px"></i>
+                </div>
+            </span>
+            <span ng-if="!easpaybSwitchCtrl.valorDeSwitch">
+                <div class="padding-cero" style="margin-top: {{easpaybSwitchCtrl.marginIconoM2}}px;"
+                     ng-if="labelOff || imgOff "
+                     ng-class="{'col-sm-10': iconOff, 'col-sm-12': !iconOff}">
+                    <img ng-if="imgOff" width="20px" height="20px" src="img/{{imgOff}}" style="margin-left: 10px;">
+                    <b ng-if="labelOff.length>55 && labelOff" tooltip title="{{labelOff}}">{{(labelOff)|limitTo:55}}...</b>
+                    <b ng-if="labelOff.length<=55 && labelOff" tooltip title="{{tooltipLabelOff}}">{{labelOff}}</b>
+                </div>
+                <div class="padding-cero" ng-if="iconOff" style="padding-right: 3px; margin-top: {{easpaybSwitchCtrl.marginIcono}}px;"
+                     tooltip title="{{tooltipLabelOff}}" data-placement="bottom"
+                     ng-class="{'col-sm-2': labelOff, 'col-sm-12': !labelOff}">
+                    <i class="fa {{faIconOff}}" ng-if="faIconOff" style="font-size: {{easpaybSwitchCtrl.tamanioIcon}}px"></i>
+                    <i class="ixs ixs-{{iconOff}}" ng-if="!faIconOff" style="font-size: {{easpaybSwitchCtrl.tamanioIcon}}px"></i>
+                </div>
+            </span>
+        </div>
+    </div>
+</div>

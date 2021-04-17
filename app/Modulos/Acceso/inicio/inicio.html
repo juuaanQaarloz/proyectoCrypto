@@ -18,7 +18,18 @@
                         <form novalidate name="form">
                             <div class="col-sm-12" style="padding: 0">
                                 <div class="col-sm-3" style="padding: 0">
-                                    <div class="col-sm-6">
+
+                                    <easpayb-switch-directive
+                                            icon-on="'aplicaciones'" icon-off="'lista'" ancho="430"
+                                            labelOn-switch="menuGralCtrl.ngModelSwitchss"
+                                            valor-on="'N'" valor-off="'S'" alto="40" margin-icon="5"
+                                            selecciono-valor-switch="menuGralCtrl.changeTipoMenu(valor);"
+                                            color-fondo-on="#CD1B3A" color-fondo-off="#0b5496" margin-label="13"
+                                            inicializar-switch="menuGralCtrl.inicializarSwitch"
+                                            label-on="'Codificar'" label-off="'Desodificar'">
+                                    </easpayb-switch-directive>
+
+                                   <!-- <div class="col-sm-6">
                                         <div>
                                             <label> Codificar </label>
                                         </div>
@@ -33,7 +44,7 @@
                                             <input type="radio" name="caracter" ng-model="inicioCtrl.indCodificar"
                                                    value="S"/>
                                         </div>
-                                    </div>
+                                    </div>-->
                                 </div>
                                 <div class="col-sm-3">
                                     <div> Tipo</div>
@@ -74,6 +85,7 @@
                                                           ng-model="inicioCtrl.clave"
                                                           style="width: 70%; display: inline-block"
                                                           ng-pattern="/^[0-9]*$/"
+                                                          ng-change="inicioCtrl.posiciones = null"
                                                           class="form-control" maxlength="500"
                                                           required/>
                                     </div>
@@ -86,7 +98,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-3" ng-if="inicioCtrl.tipoCrypto == 5">
+                                <div class="col-sm-3" ng-if="inicioCtrl.tipoCrypto == 5 && inicioCtrl.clave">
                                     <div> &nbsp; </div>
                                     <div>
                                         <div class="col-sm-1" style="padding: 0; text-align: right">
@@ -112,17 +124,17 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-1" style="padding: 0"
-                                     ng-if="inicioCtrl.tipoCrypto == 5">
+                                <!--<div class="col-sm-1" style="padding: 0"
+                                     ng-if="inicioCtrl.tipoCrypto == 5 && inicioCtrl.clave">
                                     <div> &nbsp; </div>
                                     <div style="display: inline-block">
                                         <button class="btn btn-danger"
                                                 style="padding: 2px 4px !important; font-size: 11px !important;"
-                                                ng-click="inicioCtrl.permutacionesAleatorio()">
+                                                ng-click="inicioCtrl.posicionesAleatorias()">
                                             Aleatorio
                                         </button>
                                     </div>
-                                </div>
+                                </div>-->
                             </div>
                             <div class="col-sm-12" style="margin-top: 15px">
                                 <div class="col-sm-12" style="padding: 0">
@@ -165,25 +177,16 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-sm-12"
-                 style="margin-top: 20px" ng-if="inicioCtrl.errorCadena">
-                <p style="color: red">
-                    <b style="font-size: 16px">{{inicioCtrl.errorCadena}}</b>
-                </p>
-                <p style="color: red" ng-if="inicioCtrl.errorCadenaDos">
-                    <b style="font-size: 16px">{{inicioCtrl.errorCadenaDos}}</b>
-                </p>
-            </div>
-            <div class="col-sm-12 " style="margin-top: 20px" ng-if="inicioCtrl.resultado">
+            <div class="col-sm-12 " style="margin-top: 20px"
+                 ng-if="inicioCtrl.resultado">
                 <div class="panel panel-default">
                     <div class="panel-heading text-center"
                          style="padding: 5px !important;">
                         <b style="font-size: 18px;">Cadena Codificada</b>
                     </div>
                     <div class="panel-body">
-                        <div class="col-sm-8">
-                            <h2><b>{{inicioCtrl.resultado}}</b></h2>
+                        <div style="padding: 2%; font-size: 25px;"
+                             ng-bind-html="inicioCtrl.resultado | unSafe">
                         </div>
                     </div>
                 </div>

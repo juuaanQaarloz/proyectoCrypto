@@ -72,10 +72,9 @@
         inicioCtrl.limpiarDatos = limpiarDatos;
         inicioCtrl.codificar = codificar;
         inicioCtrl.descodificar = descodificar;
-        inicioCtrl.descodificar = descodificar;
 
         function activarControlador() {
-            
+
         }
 
         function codificar() {
@@ -136,10 +135,6 @@
             var abecedarioCopy = angular.copy(abecedario);
             for (var x = 0; x < inicioCtrl.cadenaCodificar.length; x++) {
                 var caracterActual = inicioCtrl.cadenaCodificar.charAt(x);
-                console.log("fdsfdsfdsfdf");
-                console.log(typeof caracterActual === 'number');
-                console.log(isNaN(caracterActual));
-                console.log("fdsfdsfdsfdf");
                 if (!isNaN(caracterActual)) {
                     cadenaRotada = cadenaRotada + "" + caracterActual;
                 } else {
@@ -222,24 +217,6 @@
             inicioCtrl.resultado = output;
         }
 
-        function transposicion() {
-
-            var claves = "2, 3, 4, 5, 6, 7";
-            //var claves = inicioCtrl.posiciones;
-
-            var claveOrdenada = claves.split(",").sort();
-
-            console.log(claveOrdenada);
-
-            angular.forEach(claveOrdenada, function (clave, index) {
-                if( clave.trim() != (index+1)){
-                    console.log("La clave no tiene números consecutivos: ejemplo 1: {1, 2, 3, 4, 5 }, ejemplo 2: { 10, 7 , 8, 2, 3, 4, 5, 1, 6, 9 }");
-                    inicioCtrl.errorCadena = "La clave no tiene números consecutivos {" + claveOrdenada + "}";
-                    inicioCtrl.errorCadenaDos = "Ejemplos: a: {1, 2, 3, 4, 5 }, b: { 10, 7 , 8, 2, 3, 4, 5, 1, 6, 9 }, c: { 8, 2, 3, 4, 5, 1, 6, 7 }";
-                }
-            })
-        }
-
         function filterKey(key) {
             var result = [];
             for (var i = 0; i < key.length; i++) {
@@ -255,13 +232,159 @@
         }
 
         function isUppercase(c) {
-            return 65 <= c && c <= 90;  // 65 is character code for 'A'. 90 is 'Z'.
+            return 65 <= c && c <= 90;
         }
 
         function isLowercase(c) {
-            return 97 <= c && c <= 122;  // 97 is character code for 'a'. 122 is 'z'.
+            return 97 <= c && c <= 122;
         }
 
+        function transposicion(descifrar) {
+            inicioCtrl.resultado = null;
 
+            if(descifrar) {
+                var columnas = Math.floor((inicioCtrl.cadenaCodificar.length + 1 + (parseInt(inicioCtrl.posiciones.split(",")[0])) ) / inicioCtrl.clave);
+
+                var posicionesOrdenadaUno = [];
+                angular.forEach(inicioCtrl.posiciones.split(","), function (posicion) {
+                    posicionesOrdenadaUno.push(posicion.trim());
+                });
+
+                $timeout(function () {
+                    var posicionesOrdenada = posicionesOrdenadaUno.sort();
+
+                    var plaintext = new Array(columnas);
+                    var col = 0;
+                    var row = 0;
+                    angular.forEach(inicioCtrl.cadenaCodificar, function (caracter) {
+                        if(!plaintext[row]) {
+                            plaintext[row] = [];
+                            plaintext[row].push(caracter);
+                        } else {
+                            plaintext[row].push(caracter);
+                        }
+                        col++;
+                        if(col == columnas){
+                            row++;
+                            col = 0;
+                        }
+                    });
+
+
+                    $timeout(function () {
+                        var cadenas = "";
+                        var count = 0;
+                        var caracterCout = 0;
+
+                        angular.forEach(inicioCtrl.cadenaCodificar, function (caracterCodi) {
+                            var index = _.findIndex(inicioCtrl.posiciones.split(","), function (posicion) {
+                                return posicion.trim() == posicionesOrdenada[caracterCout].trim();
+                            });
+                            if(index>-1){
+                                var paso = plaintext[index];
+                                if(paso[count]){
+                                    cadenas += paso[count];
+                                    if(caracterCout == (plaintext.length-1)) {
+                                        count++;
+                                        caracterCout = 0;
+                                    } else {
+                                        caracterCout++;
+                                    }
+                                }
+                            }
+                        });
+
+                        /*angular.forEach(inicioCtrl.cadenaCodificar, function (caracterCodi) {
+                            angular.forEach(posicionesOrdenada, function (caracter) {
+                                var index = _.findIndex(inicioCtrl.posiciones.split(","), function (posicion) {
+                                    return caracter.trim() == posicion.trim();
+                                });
+
+                                if(index>-1){
+                                    var paso = plaintext[index];
+                                    if(paso[count]){
+                                        cadenas += paso[count];
+                                        if(caracterCout == (plaintext.length-1)) {
+                                            count++;
+                                            caracterCout = 0;
+                                        } else {
+                                            caracterCout++;
+                                        }
+                                    }
+                                }
+
+                            });
+                        });*/
+
+                        inicioCtrl.resultado = cadenas;
+                    });
+
+                });
+
+            } else {
+                //var claves = "2, 3, 4, 5, 6, 7";
+
+                var claves = angular.copy(inicioCtrl.posiciones);
+
+                var semanas = [];
+                //var diaInicioSemanaMes = parseInt(inicioCtrl.posiciones.split(",")[0]);
+                var diaInicioSemanaMes = 0;
+                var diasSemana = [];
+                if(diaInicioSemanaMes > 1) {
+                    for(var j = 0; j <= diaInicioSemanaMes - 1 ;j++) {
+                        diasSemana.push( "" )
+                    }
+                }
+                else if(diaInicioSemanaMes == 1){
+                    diasSemana.push( "" )
+                }
+                var count = diasSemana.length + 1;
+                angular.forEach(inicioCtrl.cadenaCodificar, function (dia, index) {
+                    if(diasSemana.length == 0){
+                        diasSemana.push( (dia == " "?'&nbsp;':dia) );
+                        if(count == inicioCtrl.clave) {
+                            semanas.push(diasSemana);
+                            diasSemana = [];
+                            count = 0;
+                        } else if (((index+1) == inicioCtrl.cadenaCodificar.length)){
+                            semanas.push(diasSemana);
+                            diasSemana = [];
+                            count = 0;
+                        }
+                    }
+                    else {
+                        if(count > diasSemana.length) {
+                            diasSemana.push( (dia == " "?'&nbsp;':dia) );
+                            if(count == inicioCtrl.clave) {
+                                semanas.push(diasSemana);
+                                diasSemana = [];
+                                count = 0;
+                            } else if (((index+1) == inicioCtrl.cadenaCodificar.length)){
+                                semanas.push(diasSemana);
+                                diasSemana = [];
+                                count = 0;
+                            }
+                        }
+                    }
+                    count++;
+                });
+
+                $timeout(function () {
+                    for(var j = (semanas[semanas.length-1].length+1); j <= inicioCtrl.clave ;j++) {
+                        semanas[semanas.length-1].push('&nbsp;')
+                    }
+                    var cadenaText = '';
+                    angular.forEach(claves.split(","), function (valor) {
+                        for (var i = 0; i < semanas.length; i++) {
+                            var lista = semanas[i];
+                            cadenaText += (lista[valor-1]?lista[valor-1]:"");
+                        }
+                    });
+                    inicioCtrl.resultado = cadenaText;
+
+                });
+            }
+
+        }
     }
 })();
